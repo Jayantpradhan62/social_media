@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block title %}post{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "posts/style.css" %}"/>
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="post-container">
+    <!--Post image, like button, like count, comments count (Left side)-->
+    <div class="post-left">
+        <div class="post-actions">
+            <span class="like-btn">
+                <a href="{% url "user-page" post.author.username %}"><img  src = "{{post.author.profile.profile_pic.url}}" alt=""></a>
+            </span>
+            <span class="comment-btn">{{post.author.username}}</span>
+        </div>
+        <img src="{{post.post_image.url}}" alt="Post Image">
+        <div class="post-actions">
+            <!--Like/Unlike post-->
+            <span class="heart">
+                <form method="POST" action="{% url "add-like" post.id %}">
+                {% csrf_token %}
+               
+                {% if liked %}
+					
+					<input name="status" value="unlike" type="hidden"/>
+					<button class="heart-button" type="submit">❤️</button>
+
+					{% else %}
+					
+					<input name="status" value="like" type="hidden"/>
+					<button  class="heart-button" type="submit">♡</button>
+
+
+					{% endif %}
+                </form>
+            </span>
+            <!--Like count-->
+            <span class="like-count">{{post.get_likes_count}}</span>
+            <!--Comments count-->
+            <span class="comment-btn">💬  <span id="like-count">{{post.get_comments_count}}</span></span>
+        </div>
+    </div>
+    <!--Post caption, title, comments, replies-->
+    <div class="post-content">
+    <div class="post-text">
+        <div class="caption">{{post.caption}}</div>
+        <div class="extra-text">{{post.text}}</div>
+    </div>
+        <div class="comments-section">
+            <!--Post comments-->
+            {% for comment in post.comments.all  %}
+            <div class="comment-list">
+                <span class="like-btn">
+                    <a href="{% url 'user-page' comment.user.username %}">
+                        <img src="{{ comment.user.profile.profile_pic.url }}" alt="">
+                    </a>
+                    <div>{{ comment.user.username }}</div>
+                    <!--Like/Unlike comment-->
+                    <span class="heart">
+                        <form method="POST" action="{% url "like-comment" comment.post.id comment.id %}">
+                        {% csrf_token %}
+                       
+                        {% if user in comment.likes.all %}
+                            
+                            <input name="comment-status" value="unlike-comment" type="hidden"/>
+                            <button class="heart-button" type="submit">❤️</button>
+        
+                            {% else %}
+                            
+                            <input name="comment-status" value="like-comment" type="hidden"/>
+                            <button  class="heart-button" type="submit">♡</button>
+        
+        
+                            {% endif %}
+                        </form>
+                    </span>
+                
+                </span>
+                
+                <div class="comment-author">
+                    
+                    <p>{{ comment.text }}</p>
+                    <a href="javascript:void(0);" onclick="toggleReplyBox({{ comment.id }})">reply</a>
+                    <!--Reply to a comment-->
+                    <form class="reply-form hidden" id="reply-box-{{ comment.id }}" method="POST" action="{% url 'add-comment' post.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment-id" value="{{ comment.id }}">
+                        <input type="hidden" name="comment-author" value="{{ comment.user.username }}">
+                        <input type="text" name="reply" placeholder="Write a reply...">
+                        <button type="submit">Reply</button>
+                    </form>
+                    <!--Show replies to a comment-->
+                    <a id="toggle-replies-{{comment.id}}"  href="javascript:void(0);" onclick="toggleReplies({{ comment.id }})">show replies</a>
+                </div>
+                    <!--Replies for a comment-->
+                    {% for reply in comment.replies.all %}
+                    <div class="reply-list show-reply-{{reply.comment.id}} hidden">
+                        <span class="like-btn">
+                            <a href="{% url 'user-page' reply.user.username %}">
+                                <img src="{{ reply.user.profile.profile_pic.url }}" alt="">
+                            </a>
+                            <div>{{ reply.user.username }}</div>
+
+                            <span class="heart">
+                                <form method="POST" action="{% url "like-reply" reply.comment.post.id reply.id %}">
+                                {% csrf_token %}
+                               
+                                {% if user in reply.likes.all %}
+                                    
+                                    <input name="reply-status" value="unlike-reply" type="hidden"/>
+                                    <button class="heart-button" type="submit">❤️</button>
+                
+                                    {% else %}
+                                    
+                                    <input name="reply-status" value="like-reply" type="hidden"/>
+                                    <button  class="heart-button" type="submit">♡</button>
+                
+                
+                                    {% endif %}
+                                </form>
+                            </span>
+                        </span>
+
+                         
+                        <div class="reply-author">
+                            <a href="{% url 'user-page' reply.replied_to.username %}">@{{ reply.replied_to.username }}</a>
+                          
+                            <p>{{ reply.text }}</p>
+                        </div>
+                        <a href="javascript:void(0);" onclick="toggleReplyBox({{ reply.id }})">reply</a>
+                        <!--Reply to reply on a comment-->
+                        <form class="reply-form hidden" id="reply-box-{{ reply.id }}" method="POST" action="{% url 'add-comment' post.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="comment-id" value="{{ reply.comment.id }}">
+                            <input type="hidden" name="comment-author" value="{{ reply.user.username }}">
+                            <input type="text" name="reply" placeholder="Write a reply...">
+                            <button type="submit">Reply</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="comments">
+            <form method="POST" action="{% url "add-comment" post.id %}">
+                {% csrf_token %}
+            <input name="user-comment" type="text" id="comment-input" placeholder="Add a comment...">
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+<!--Other posts gallery-->
+<div class="user-posts">
+    {% for other_post in post.author.posts.all%}
+    <a href="{% url "post" other_post.id %}"><img src="{{other_post.post_image.url}}" alt="{{other_post.caption}}"></a>
+    {% endfor %}
+</div>
+
+
+
+
+<!--Post liked by overlay-->
+<div id="likeOverlay" class="overlay"></div>
+
+<!--Post liked by modal-->
+<div id="likesModal" class="floating-box">
+  <div class="floating-box-header">
+    <h3>Liked By</h3>
+    <span class="close-btn">&times;</span>
+  </div>
+  <ul class="followers-list">
+    {% for user in post.likes.all %}
+      <li>
+            <a href="{% url "user-page" user.username %}">
+                <img src="{{ user.profile.profile_pic.url }}" alt="{{ user.username }}">
+            </a>
+            <span>{{ user.username }}</span>
+      </li>
+    {% empty %}
+      <li>No likes yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<script src="{% static 'posts/like.js' %}"></script>
+<script src="{% static 'posts/comments.js' %}"></script>
+
+
+{% endblock content %}

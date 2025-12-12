@@ -1,0 +1,240 @@
+body{
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	font-family: 'Jost', sans-serif;
+	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+}
+.main{
+	width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+#chk{
+	display: none;
+}
+.signup{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+label{
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 50px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input{
+	width: 60%;
+	height: 10px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 12px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #573b8a;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 30px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+button:hover{
+	background: #6d44b8;
+}
+.login{
+	height: 460px;
+	background: #eee;
+	border-radius: 60% / 10%;
+	transform: translateY(-180px);
+	transition: .8s ease-in-out;
+}
+.login label{
+	color: #573b8a;
+	transform: scale(.6);
+}
+
+#chk:checked ~ .login{
+	transform: translateY(-500px);
+}
+#chk:checked ~ .login label{
+	transform: scale(1);	
+}
+#chk:checked ~ .signup label{
+	transform: scale(.6);
+}
+
+
+
+
+
+
+
+
+.profile-pic-wrapper {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	margin: 20px auto;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.profile-pic-wrapper img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+	display: block;
+	z-index: 1;
+	position: relative;
+}
+
+.profile-pic-wrapper .overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 50%;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	z-index: 2;
+	pointer-events: none; 
+}
+
+.profile-pic-wrapper:hover .overlay {
+	opacity: 1;
+}
+
+.upload-btn-bottom-left {
+	position: absolute;
+	bottom: 1px;
+	right: 2px;
+	color: white;
+	font-size: 1.2rem;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+	z-index: 3; 
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0; 
+	transition: opacity 0.3s ease;
+}
+
+.profile-pic-wrapper:hover .upload-btn-bottom-left {
+	opacity: 1;
+  }
+  
+
+.add-btn {
+	opacity: 1;
+}
+
+#id_profile_pic {
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+.search-bar-container {
+    position: absolute;
+    max-width: 300px;
+    margin: 20px auto;
+    
+    top: 80px;
+    right: 30px;
+  }
+  
+  #liveSearchInput {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .live-search-results {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .live-search-results a {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s ease;
+  }
+  
+  .live-search-results a:hover {
+    background: #f0f0f0;
+  }
+  
+  .live-search-results img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .errorlist {
+    color: red;
+    list-style: none;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    text-align: center;
+    width: 100%;
+}
+
+  
+
+

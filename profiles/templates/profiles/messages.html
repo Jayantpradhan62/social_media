@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+
+{% load static %}
+
+
+{% block title %}Messages{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "profiles/messages.css" %}"/>
+
+{% endblock css %}
+
+
+{% block content %}
+
+<!--Users in chat-page-->
+<div class="chat-sidebar" id="chatSidebar">
+    
+    <!--Search users in chat-page-->
+    <div class="search-bar-container">
+        <input type="text" id="liveSearchInput" placeholder="Search users..." autocomplete="off">
+    </div>
+    
+    {% for chat in chats %}
+        {% if chat.first_user == request.user %} 
+            
+            {% with other_user=chat.second_user %}
+
+            <a href="{% url "message-page" other_user.username %}" class="chat-preview default">
+                <img src="{{ other_user.profile.profile_pic.url }}" alt="{{ other_user.username }}" class="avatar" />
+                <div class="chat-info">
+                    <p class="username">{{ other_user.username }}</p>
+                    <p class="latest">{{ chat.get_latest_message|truncatechars:30 }}</p>
+                </div>
+            </a>
+    
+            {% endwith %}
+        
+        {% else %}
+            
+            {% with other_user=chat.first_user %}
+
+            <a href="{% url "message-page" other_user.username %}" class="chat-preview default">
+                <img src="{{ other_user.profile.profile_pic.url }}" alt="{{ other_user.username }}" class="avatar" />
+                <div class="chat-info">
+                    <p class="username">{{ other_user.username }}</p>
+                    <p class="latest">{{ chat.get_latest_message|truncatechars:30 }}</p>
+                </div>
+            </a>
+    
+            
+            {% endwith %}
+        
+        
+        {% endif %}
+
+        
+    {% endfor %}
+</div>
+
+
+{% if user %}
+<!--Chat with user-->
+<div class="chat-page">
+    <a href="{% url "user-page" user.username %}"  class="chat-header">
+        <img src="{{ user.profile.profile_pic.url }}" alt="Profile Picture" class="chat-avatar">
+        <h2 class="chat-username">
+            {{ user.username }}
+        </h2>
+    </a>
+
+
+    <div class="chat-container" id="chat-box">
+
+        {% for message in user_chat.messages.all %}
+            {% if message.sender == request.user %}
+                <div class="message user">
+                    <p>{{ message.text }}</p>
+                </div>
+            {% else %}
+                <div class="message other">
+                    <strong>{{ message.sender.username }}</strong><br>
+                    <p>{{ message.text }}</p>
+                </div>
+            {% endif %}
+        {% empty %}
+            <p style="margin:10px auto">no messages with this user yet</p>
+        {% endfor %}
+
+    </div>
+
+   {% if form.errors %}
+   
+   <div class="form-errors" id="text-error">
+    {{ form.errors.text }}
+    </div>
+    
+    {% endif %}
+    
+    <form method="POST" class="chat-form">
+        {% csrf_token %}
+        {{ form.text }}
+        <button type="submit">&rarr;</button>
+    </form>
+
+</div>
+
+
+{% else %}
+
+<div class="chat-page">
+<h3 style="margin: 30vh auto;font-weight:lighter;">View your chats with other users </h3>
+</div>
+
+{% endif %}
+
+<script src="{% static "profiles/chat.js" %}"></script>
+<script src="{% static "profiles/messages.js" %}"></script>
+
+{% endblock content %}
+
+
+

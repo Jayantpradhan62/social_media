@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "autho/style.css" %}"/>
+
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="main">  	
+    <!--Toggle between Sign-up and login-->
+    {% if sign %}
+    
+    <input type="checkbox" id="chk" aria-hidden="true">
+
+    {% else %}
+
+    <input type="checkbox" id="chk" aria-hidden="true" checked="checked">
+    
+    {% endif %}
+        <!--Sign-up-->
+        <div class="signup" >
+            <form method="POST" action="{% url "create-account" %}">
+
+                {% csrf_token %}
+        
+                <label for="chk" aria-hidden="true">Sign up</label>
+                {{form2.username}}
+                {{form2.errors.username}}
+
+                {{form2.email}}
+                {{form2.errors.email}}
+        
+                {{form2.password1}}
+                {{form2.errors.password}}
+                {{form2.password2}}
+                {{form2.errors.password2}}
+                
+                <button type="submit">Sign up</button>
+              </form>
+             
+        </div>
+        <!--Login-->
+        <div class="login">
+            <form method="POST" action="{% url "user-login" %}">
+                {% csrf_token %}
+                <label for="chk" aria-hidden="true">Login</label>
+                
+                {{form.username}}
+                
+
+                {{form.password}}
+
+                {% for key,value in form.errors.items %}
+                
+                {{value}}
+                
+                {% endfor %}
+                
+                <button type="submit">Login</button>
+            </form>
+            <!--forgot-password-->
+            <a href="{% url "reset-password" %}">forgot password?</a>
+        </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock content %} 

@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}profile-page{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "profiles/index.css" %}"/>
+
+{% endblock css %}
+
+{% block content %}
+
+<!--Your profile-page-->
+<header>
+	
+	<div class="container">
+		<!--Search users-->
+		<div class="search-bar-container">
+			<input type="text" id="liveSearchInput" placeholder="Search users..." autocomplete="off">
+			<div id="liveSearchResults" class="live-search-results"></div>
+		</div>
+		  
+		  
+		<!--Profile details-->
+		<div class="profile">
+
+			<div class="profile-image">
+				<img src="{{profile.profile_pic.url}}" alt="">
+			</div>
+
+			<div class="profile-user-settings">
+
+				<h1 class="profile-user-name">{{profile.user.username}}</h1>
+
+				<a href="{% url "edit-profile" %}" class="btn profile-edit-btn" style="text-decoration:none;">Edit Profile</button>
+
+				<a href="{% url "user-logout" %}"  class="btn profile-edit-btn"  style="text-decoration:none;">Logout</a>
+
+				<div class="btn profile-edit-btn"  style="text-decoration:none;">+</div>
+				
+				<button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+
+			</div>
+
+			<div class="profile-stats">
+				<ul>
+					<li><span class="profile-stat-count">{{profile.get_post_count}}</span> posts</li>
+					<li><span class="profile-stat-count">{{profile.get_followers}}</span> followers</li>
+					<li><span class="profile-stat-count">{{profile.get_following}}</span> following</li>
+				</ul>
+			</div>
+
+			<div class="profile-bio">
+				<p><p class="profile-real-name">{{profile.first_name}} {{profile.last_name}}</p> {{profile.bio}}</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+
+<!--Your posts gallery-->
+<main>
+
+	<div class="container">
+
+		<div class="gallery">
+
+			{% for post in profile.user.posts.all  %}
+
+			
+			<a href="{% url "post" post.id %}" class="gallery-item" tabindex="0">
+
+				<img src="{{post.post_image.url}}" class="gallery-image" alt="">
+
+				<div class="gallery-item-info">
+
+					<ul>
+						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
+						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+					</ul>
+
+				</a>
+
+			</div>
+			
+			{% endfor %}
+        
+		</div>
+	
+	</div>
+
+</main>
+
+
+<!--Followers overlay-->
+<div id="followersOverlay" class="overlay"></div>
+
+<!--Floating followers modal-->
+<div id="followersModal" class="floating-box">
+	<div class="floating-box-header">
+	  <h3>Followers</h3>
+	  <span class="close-btn">&times;</span>
+	</div>
+	<ul class="followers-list">
+	  {% for user in profile.followers.all %}
+		<li>
+			<a href="{% url "user-page" user.username %}" style="text-decoration:none;" class="follower-user">
+		  		<img src="{{ user.profile.profile_pic.url }}" alt="{{ user.username }}">
+		  		<div class="follower-name">{{ user.username }}</div>
+			</a>
+		</li>
+	  {% empty %}
+		<li>No followers yet.</li>
+	  {% endfor %}
+	</ul>
+  </div>
+
+
+  <!--Following overlay-->
+<div id="followingOverlay" class="overlay"></div>
+
+<!--Floating following modal-->
+<div id="followingModal" class="floating-box">
+  <div class="floating-box-header">
+    <h3>Following</h3>
+    <span class="close-btn following-close">&times;</span>
+  </div>
+  <ul class="followers-list">
+    {% for user in profile.following.all %}
+	<li>
+		<a href="{% url "user-page" user.username %}" style="text-decoration:none;" class="follower-user">
+			  <img src="{{ user.profile.profile_pic.url }}" alt="{{ user.username }}">
+			  <div class="follower-name">{{ user.username }}</div>
+		</a>
+	</li>
+    {% empty %}
+      <li>Not following anyone yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<!--Create Post Overlay-->
+<div  {% if form.errors %}style="display:block;"{% endif %}  id="PostOverlay" class="overlay"></div>
+
+
+<!--Floating create post modal-->
+<div {% if form.errors %}style="display:block;"{% endif %}  id="createpostModal" class="create-post-floating-box">
+	<div class="floating-box-header">
+	  <h3>Create Post</h3>
+	  {{form.errors.post_image}}
+	  <span class="close-btn">&times;</span>
+	</div>
+	
+	<div class="post-container">
+		<form method="POST"  enctype="multipart/form-data" class="post-form">
+		  {% csrf_token %}
+		  
+		  <!--Post image preview (Left)-->
+		  <div class="post-image-preview">
+			<img id="imagePreview" src="{% static 'img/placeholder.png' %}" alt="Preview" />
+			<div class="post-overlay"></div>
+			<label for="id_post_image" class="upload-btn-bottom-left">
+				<span class="add-btn">+</span>
+			  </label>
+			  {{ form.post_image }}
+		   </div>
+		  
+	  
+		  <!--Post fields caption,title (Right)-->
+		  <div class="post-form-fields">
+			<div class="form-group">
+			
+			  {{ form.caption }}
+			  {{form.errors.caption}}
+			</div>
+	  
+			<div class="form-group">
+			
+			  {{ form.text }}
+			  {{form.errors.text}}
+			</div>
+			
+			<button type="submit" class="btn publish-btn">Publish</button>
+		  </div>
+		</form>
+	</div>
+
+</div>
+
+<script src="{% static 'profiles/index.js' %}"></script>
+  
+{% endblock content %}

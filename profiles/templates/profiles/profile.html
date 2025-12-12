@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Edit-Profile{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "profiles/profile.css" %}"/>
+{% endblock css %}
+
+
+{% block content %}
+
+<!--Edit profile page-->
+<div class="main">  	
+      <div class="signup">
+        
+        <form method="POST" action="{% url "edit-profile" %}"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <!--Profile-pic-->
+          <div class="profile-pic-wrapper">
+            <img id="profile-pic-preview" src="{{ user.profile.profile_pic.url }}" alt="Profile Picture">
+            <div class="overlay"></div>
+            <label for="id_profile_pic" class="upload-btn-bottom-left">
+              <span class="add-btn">+</span>
+            </label>
+            {{ form.profile_pic }}
+          </div>
+          
+          {{form.first_name}}
+          {{form.errors.first_name}}
+  
+          {{form.last_name}}
+          {{form.errors.last_name}}
+          {{form.bio}}
+          {{form.errors.bio}}
+          
+          <button type="submit">Save</button>
+        </form>
+       
+      </div>
+</div>
+  
+<script src="{% static 'profiles/profile.js' %}"></script>
+
+
+{% endblock content %}

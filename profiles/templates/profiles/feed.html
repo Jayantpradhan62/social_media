@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Feed{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "profiles/feed.css" %}"/>
+
+{% endblock css %}
+
+<!--Loads the feed-page with posts of different users on the platform in a gallery-->
+{% block content %}
+
+<div class="container">
+
+    <div class="gallery">
+
+        {% for post in posts  %}
+
+        
+        <div class="gallery-item" tabindex="0" onclick="setFirstPost({{post.id}})">
+
+            <img src="{{post.post_image.url}}" class="gallery-image" alt="{{post.caption}}">
+
+            
+        </div>
+
+        
+        {% endfor %}
+
+        
+    </div>
+
+</div>
+
+<script>
+    const csrfToken = "{{csrf_token}}"
+</script>
+<script src="{% static "profiles/feed.js" %}"></script>
+
+
+{% endblock content %}
+
+
+
+
+
+
+   

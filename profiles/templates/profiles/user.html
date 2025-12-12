@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}User-Page{% endblock title %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "profiles/index.css" %}"/>
+
+{% endblock css %}
+
+
+{% block content %}
+
+<!--User profile-->
+<header>
+    
+	<div class="container">
+		<!--Search bar-->
+		<div class="search-bar-container">
+			<input type="text" id="liveSearchInput" placeholder="Search users..." autocomplete="off">
+			<div id="liveSearchResults" class="live-search-results"></div>
+		</div>
+		<!--User Profile-->
+		<div class="profile">
+			<div class="profile-image">
+				<img src="{{profile.profile_pic.url}}" alt="">
+			</div>
+
+			<div class="profile-user-settings">
+				<h1 class="profile-user-name">{{profile.user.username}}</h1>
+
+				<form method="POST" action="{% url "follow" profile.user.username %}" class="btn profile-edit-btn" style="border:none;">
+					{% csrf_token %}
+					{% if does_follow %}
+					
+					<input name="status" value="unfollow" type="hidden"/>
+					<button class="btn profile-edit-btn" type="submit">UnFollow</button>
+
+					{% else %}
+					
+					<input name="status" value="follow" type="hidden"/>
+					<button class="btn profile-edit-btn" type="submit">Follow</button>
+
+
+					{% endif %}
+				</form>
+				
+				<a href="{% url "chat-page" profile.user.username %}"  class="btn profile-edit-btn"  style="text-decoration:none;">message</a>
+			</div>
+
+			<div class="profile-stats">
+				<ul>
+					<li><span class="profile-stat-count">{{profile.get_post_count}}</span> posts</li>
+					<li><span class="profile-stat-count">{{profile.get_followers}}</span> followers</li>
+					<li><span class="profile-stat-count">{{profile.get_following}}</span> following</li>
+				</ul>
+			</div>
+
+			<div class="profile-bio">
+				<p><p class="profile-real-name">{{profile.first_name}} {{profile.last_name}}</p> {{profile.bio}}</p>
+			</div>
+		</div>
+	
+	</div>
+
+</header>
+
+<!--User posts gallery-->
+<main>
+	<div class="container">
+		<div class="gallery">
+
+			{% for post in profile.user.posts.all  %}
+			
+			<a  href="{% url "post" post.id %}" class="gallery-item" tabindex="0">
+				<img src="{{post.post_image.url}}" class="gallery-image" alt="">
+				<div class="gallery-item-info">
+					<ul>
+						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
+						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+					</ul>
+				</div>
+			</a>
+			
+			
+			
+			{% endfor %}
+		</div>
+    </div>
+</main>
+
+<!--Followers overlay-->
+<div id="followersOverlay" class="overlay"></div>
+
+
+<!--Floating followers modal-->
+<div id="followersModal" class="floating-box">
+	<div class="floating-box-header">
+	  <h3>Followers</h3>
+	  <span class="close-btn">&times;</span>
+	</div>
+	<ul class="followers-list">
+	  {% for user in profile.followers.all %}
+	  <li>
+		<a href="{% url "user-page" user.username %}" style="text-decoration:none;" class="follower-user">
+			  <img src="{{ user.profile.profile_pic.url }}" alt="{{ user.username }}">
+			  <div class="follower-name">{{ user.username }}</div>
+		</a>
+	</li>
+	  {% empty %}
+		<li>No followers yet.</li>
+	  {% endfor %}
+	</ul>
+  </div>
+
+<!--Following overlay-->
+<div id="followingOverlay" class="overlay"></div>
+
+<!--Floating following modal-->
+<div id="followingModal" class="floating-box">
+  <div class="floating-box-header">
+    <h3>Following</h3>
+    <span class="close-btn following-close">&times;</span>
+  </div>
+  <ul class="followers-list">
+    {% for user in profile.following.all %}
+	<li>
+		<a href="{% url "user-page" user.username %}" style="text-decoration:none;" class="follower-user">
+			  <img src="{{ user.profile.profile_pic.url }}" alt="{{ user.username }}">
+			  <div class="follower-name">{{ user.username }}</div>
+		</a>
+	</li>
+    {% empty %}
+      <li>Not following anyone yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+ 
+
+<script src="{% static 'profiles/index.js' %}"></script>
+  
+
+{% endblock content %}

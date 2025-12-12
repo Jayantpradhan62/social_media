@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "profiles/chat.css" %}"/>
+
+{% endblock css %}
+
+
+{% block title %}Chats{% endblock title %}
+
+<!--Loads chat with a user-->
+{% block content %}
+
+<!--Chat with user-->
+<div class="chat-page">
+    <a href="{% url "user-page" user.username %}"  class="chat-header">
+        <img src="{{ user.profile.profile_pic.url }}" alt="Profile Picture" class="chat-avatar">
+        <h2 class="chat-username">
+            {{ user.username }}
+        </h2>
+    </a>
+
+
+    <div class="chat-container" id="chat-box">
+
+        {% for message in chat.messages.all %}
+            {% if message.sender == request.user %}
+                <div class="message user">
+                    <p>{{ message.text }}</p>
+                </div>
+            {% else %}
+                <div class="message other">
+                    <strong>{{ message.sender.username }}</strong><br>
+                    <p>{{ message.text }}</p>
+                </div>
+            {% endif %}
+        {% empty %}
+            <p style="margin:10px auto">no messages with this user yet</p>
+        {% endfor %}
+
+    </div>
+
+   {% if form.errors %}
+   
+   <div class="form-errors" id="text-error">
+    {{ form.errors.text }}
+    </div>
+
+   
+   {% endif %}
+
+    <form method="POST" class="chat-form">
+        {% csrf_token %}
+        {{ form.text }}
+        <button type="submit">&rarr;</button>
+    </form>
+
+</div>
+
+<script src="{% static "profiles/chat.js" %}"></script>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
