@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "cloudinary_storage",
-    "cloudinary",
     "profiles",
     "posts",
     "autho",
@@ -166,9 +164,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 MEDIA_URL  = "/media/"
-
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
+MEDIA_ROOT = BASE_DIR / "uploads"
 
 
 LOGIN_URL = "/autho/login"
