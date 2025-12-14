@@ -14,6 +14,7 @@ urlpatterns = [
     path("messages",views.MessageView.as_view(),name="message-list-page"),
     path("messages/<str:username>",views.MessageView.as_view(),name="message-page"),
     path("search-user-messages/",views.search_user_messages,name="search-user-messages"),
+    path("favicon.ico", views.favicon_view),
     path("<str:username>",views.ProfilePage.as_view(),name="user-page"),
 
 ]

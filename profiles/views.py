@@ -357,12 +357,10 @@ class MessageView(View,LoginRequiredMixin):
         return render(request,self.template,context)
 
     
-    
-        
-        
-            
-           
-       
+
+# Deals with favicon.ico
+def favicon_view(request):
+    return HttpResponse(status=204)
             
         
         
