@@ -164,6 +164,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 
 MEDIA_URL  = "/media/"
 
