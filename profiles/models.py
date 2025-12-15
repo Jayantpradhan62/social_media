@@ -21,16 +21,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
-    def save(self,*args, **kwargs):
-        super().save()
-        
-        img  = Image.open(self.profile_pic.path)
-        
-        if img.height > 100 or img.width > 100:
-            img_ratio = (100,100)
-            img.thumbnail(img_ratio)
-            img.save(self.profile_pic.path)
-    
     def get_followers(self):
         return self.followers.count()
     

@@ -23,15 +23,7 @@ class Posts(models.Model):
     def get_comments_count(self):
         return self.comments.count()
     
-    def save(self,*args, **kwargs):
-        super().save()
-        
-        post_img  = Image.open(self.post_image.path)
-        
-        if post_img.height != 500 or post_img.width != 500:
-            img_ratio = (500,500)
-            post_img.thumbnail(img_ratio)
-            post_img.save(self.post_image.path)
+    
 
 
 
