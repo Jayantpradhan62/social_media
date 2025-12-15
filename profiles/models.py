@@ -33,11 +33,7 @@ class Profile(models.Model):
     def get_post_count(self):
         return self.user.posts.count()
     
-    @property
-    def display_pic(self):
-        if self.profile_pic:
-            return self.profile_pic.url
-        return "https://res.cloudinary.com/dmfvq8sce/image/upload/v1765811496/default_cfcdht.jpg"
+
         
 
 class Chats(models.Model):
