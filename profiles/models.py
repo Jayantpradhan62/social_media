@@ -4,25 +4,21 @@ from PIL import Image
 from datetime import datetime
 from django.utils.timezone import make_aware
 
-from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
-    first_name = models.CharField(max_length=20,blank=True,default="")
-    last_name = models.CharField(max_length=20,blank=True,default="")
-    bio = models.CharField(max_length=50,blank=True,default="")
-    profile_pic = CloudinaryField('profile_pic',null=True,blank=True)
-    email = models.EmailField(max_length=200,blank=True,default="")
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    bio = models.CharField(max_length=50)
+    profile_pic = models.ImageField(default="default.jpg",upload_to="profile_pics",blank=True,null=True)
+    email = models.EmailField(max_length=200,blank=True)
     following = models.ManyToManyField(User,related_name="following",blank=True)
     followers = models.ManyToManyField(User,related_name="followers",blank=True)
     
     
-    def save(self, *args, **kwargs):
-        if not self.profile_pic:
-            self.profile_pic = "default_cfcdht"
-        super().save(*args, **kwargs)
+
     
     def __str__(self):
         return self.user.username
@@ -36,11 +32,6 @@ class Profile(models.Model):
     def get_post_count(self):
         return self.user.posts.count()
     
-    @property
-    def display_pic(self):
-        if self.profile_pic:
-            return self.profile_pic.url
-        return "https://res.cloudinary.com/dmfvq8sce/image/upload/v1765811496/default_cfcdht.jpg"
         
 
 class Chats(models.Model):
