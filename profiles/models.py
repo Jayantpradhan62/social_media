@@ -13,7 +13,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     bio = models.CharField(max_length=50)
-    profile_pic = CloudinaryField('profile_pic')
+    profile_pic = CloudinaryField('profile_pic',default='default_cfcdht')
     email = models.EmailField(max_length=200,blank=True)
     following = models.ManyToManyField(User,related_name="following",blank=True)
     followers = models.ManyToManyField(User,related_name="followers",blank=True)
