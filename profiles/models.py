@@ -3,9 +3,6 @@ from django.contrib.auth.models import User
 from PIL import Image
 from datetime import datetime
 from django.utils.timezone import make_aware
-
-from cloudinary.models import CloudinaryField
-
 # Create your models here.
 
 class Profile(models.Model):
@@ -13,7 +10,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     bio = models.CharField(max_length=50)
-    profile_pic = CloudinaryField('profile_pic', blank=True,null=True)
+    profile_pic = models.ImageField(default="default.jpg",upload_to="profile_pics",blank=True,null=True)
     email = models.EmailField(max_length=200,blank=True)
     following = models.ManyToManyField(User,related_name="following",blank=True)
     followers = models.ManyToManyField(User,related_name="followers",blank=True)
