@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load cloudinary %}
 
 {% block title %}profile-page{% endblock title %}
 
@@ -27,7 +28,7 @@
 		<div class="profile">
 
 			<div class="profile-image">
-				<img src="{{profile.profile_pic.url}}" alt="">
+				{% cloudinary user.profile.profile_pic%}
 			</div>
 
 			<div class="profile-user-settings">
