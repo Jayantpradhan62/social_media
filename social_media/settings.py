@@ -108,16 +108,6 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    
-STORAGES = {
-  'default': {
-    'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage' 
-  },
-  'staticfiles': {                                                 
-    'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'      
-  },
-}
-
 
 
 # Password validation
@@ -171,11 +161,14 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 
 MEDIA_URL  = "/media/"
 
-
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
 
