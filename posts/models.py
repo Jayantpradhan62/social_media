@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PIL import Image
+
+from cloudinary.models import CloudinaryField
+
 # Create your models here.
 
 
@@ -12,7 +14,7 @@ class Posts(models.Model):
     likes = models.ManyToManyField(User,related_name="post_likes",blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    post_image = models.ImageField(upload_to="post_images")
+    post_image = CloudinaryField("post_images")
     
     def __str__(self):
         return f"{self.caption}-{self.author.username}"
