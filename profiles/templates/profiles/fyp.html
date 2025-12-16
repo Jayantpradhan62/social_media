@@ -21,7 +21,7 @@
     <div class="post-left">
         <div class="post-actions">
             <span class="like-btn">
-                <a href="{% url "user-page" post.author.username %}"><img  src = "{{post.author.profile.profile_pic.url}}" alt=""></a>
+                <a href="{% url "user-page" post.author.username %}"><img  src = "{{post.author.profile.profile_pic.url}}" alt="post-author-link"></a>
             </span>
             <span class="comment-btn">{{post.author.username}}</span>
 
@@ -68,7 +68,7 @@
             <div class="comment-list">
                 <span class="like-btn">
                     <a href="{% url 'user-page' comment.user.username %}">
-                        <img src="{{ comment.user.profile.profile_pic.url }}" alt="">
+                        <img src="{{ comment.user.profile.profile_pic.url }}" alt="comment-user-profile-pic">
                     </a>
                     <div>{{ comment.user.username }}</div>
                     
@@ -116,7 +116,7 @@
                     <div class="reply-list show-reply-{{reply.comment.id}} hidden">
                         <span class="like-btn">
                             <a href="{% url 'user-page' reply.user.username %}">
-                                <img src="{{ reply.user.profile.profile_pic.url }}" alt="">
+                                <img src="{{ reply.user.profile.profile_pic.url }}" alt="reply-user-profile-pic">
                             </a>
                             <div>{{ reply.user.username }}</div>
 

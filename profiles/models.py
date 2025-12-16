@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PIL import Image
 from datetime import datetime
 from django.utils.timezone import make_aware
 

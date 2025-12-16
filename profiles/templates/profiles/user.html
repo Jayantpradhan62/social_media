@@ -25,7 +25,7 @@
 		<!--User Profile-->
 		<div class="profile">
 			<div class="profile-image">
-				<img src="{{profile.profile_pic.url}}" alt="">
+				<img src="{{profile.profile_pic.url}}" alt="profile-pic">
 			</div>
 
 			<div class="profile-user-settings">
@@ -75,7 +75,7 @@
 			{% for post in profile.user.posts.all  %}
 			
 			<a  href="{% url "post" post.id %}" class="gallery-item" tabindex="0">
-				<img src="{{post.post_image.url}}" class="gallery-image" alt="">
+				<img src="{{post.post_image.url}}" class="gallery-image" alt="post-pic">
 				<div class="gallery-item-info">
 					<ul>
 						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
